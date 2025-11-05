@@ -25,5 +25,23 @@ namespace pirmais_praktiskais_darbs.Models
         {
             optionsBuilder.UseSqlServer("Server=DESKTOP-2HA9TKD\\SQLEXPRESS;Database=DarbiniekuInfo;Trusted_Connection=True;TrustServerCertificate=true");
         }
+
+        // Attiecību konfigurēšana
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            modelBuilder.Entity<Darbinieks>()
+                .HasOne(d => d.Amats)
+                .WithMany(a => a.Darbinieki)
+                .HasForeignKey(d => d.AmatsId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<Darbinieks>()
+                .HasOne(d => d.Departaments)
+                .WithMany(dep => dep.Darbinieki)
+                .HasForeignKey(d => d.DepartamentsId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }
